@@ -14,13 +14,22 @@ class MainCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
+
+
+    @commands.Cog.listener() #y = any(x in String for x in List)
     async def on_message(self, message):
         if "🇩🇰" in message.content:
             try:
                 await message.delete()
             except:
                 await message.reply('No danish "people" allowed here')
+
+        elif 'https://' in message.content:
+            if any(x in message.content.lower() for x in ['danmark', 'dansk', 'denmark', 'dansih']):
+                try:
+                    await message.delete()
+                except:
+                    await message.reply('No danish "people" allowed here')
 
     
 
