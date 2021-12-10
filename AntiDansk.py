@@ -3,11 +3,8 @@ import discord.member
 import discord.channel
 import discord.message
 import discord.voice_client
-from discord.ext import commands, tasks
-import os
-import requests
-import time
-import importlib
+from discord.ext import commands
+import re
 
 class MainCog(commands.Cog):
 
@@ -24,12 +21,13 @@ class MainCog(commands.Cog):
             except:
                 await message.reply('No danish "people" allowed here')
 
-        elif 'https://' in message.content:
-            if any(x in message.content.lower() for x in ['danmark', 'dansk', 'denmark', 'dansih']):
-                try:
-                    await message.delete()
-                except:
-                    await message.reply('No danish "people" allowed here')
+        elif re.search(r'https://(.*?)(danmark|dansk|denmark|danish|danske|pølse|dane|danes|dansken|densk)', message.content):
+            try:
+                await message.delete()
+            except:
+                await message.reply('No danish "people" allowed here')
+
+        #elif len(message.attachments) > 0:
 
     
 
@@ -46,6 +44,12 @@ class MainCog(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if "🇩🇰" in after.content:
+            try:
+                await after.delete()
+            except:
+                await after.reply('No danish "people" allowed here')
+
+        elif re.search(r'https://(.*?)(danmark|dansk|denmark|danish|danske|pølse|dane|danes|dansken|densk)', after.content):
             try:
                 await after.delete()
             except:
